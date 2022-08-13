@@ -3,18 +3,14 @@
 use Castoware\Config;
 use Opis\Database\Database;
 
-require(__DIR__ . '/vendor/autoload.php');
+require("vendor/autoload.php");
 $config = new Config;
 $db = new Database($config->connection);
 
-$pages = $db->from('pages')
-  ->select(['id'])
-  ->all();
-
 $lip = new joshtronic\LoremIpsum();
 
-foreach ($pages as $page) {
-  $db->update('pages')
-    ->where('id')->is($page->id)
-    ->set(['contents' => $lip->paragraphs(rand(2, 6))]);
-}
+$contents = $lip->paragraphs(6);
+
+$db->update('pages')
+  ->where('id')->is(7)
+  ->set(['contents' => $contents]);
