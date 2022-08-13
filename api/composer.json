@@ -1,0 +1,12 @@
+{
+  "require": {
+    "altorouter/altorouter": "^2.0",
+    "opis/database": "^4.2",
+    "joshtronic/php-loremipsum": "^2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Castoware\\": "Castoware/"
+    }
+  }
+}
