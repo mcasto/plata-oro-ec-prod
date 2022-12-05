@@ -7,6 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'joshtronic\\' => array($vendorDir . '/joshtronic/php-loremipsum/src'),
+    'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
+    'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
+    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
+    'PhpZip\\' => array($vendorDir . '/nelexa/zip/src'),
     'Opis\\Database\\' => array($vendorDir . '/opis/database/src'),
     'Castoware\\' => array($baseDir . '/Castoware'),
 );

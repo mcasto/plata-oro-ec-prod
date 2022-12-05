@@ -19,19 +19,10 @@ require_once(__DIR__ . '/methods/index.php');
 
 $router->addRoutes([
   ['get', '/api/get-contents/[:path]?', 'getContents'],
-  ['get', '/api/get-contact-id/[:subject]', function ($db, $request) {
-    $idFile = __DIR__ . '/id-file.txt';
-    if (!file_exists($idFile)) file_put_contents($idFile, '0');
-    $prevID = trim(file_get_contents(__DIR__ . '/id-file.txt'));
-    $id = $prevID + 1;
-    file_put_contents(__DIR__ . '/id-file.txt', $id);
-    $s = explode(" ", urldecode($request->params->subject));
-    $sid = array_map(function ($word) {
-      return substr($word, 0, 1);
-    }, $s);
-
-    print "POE-" . strtoupper(implode("", $sid)) . "-" . sprintf("%06s", $id);
-  }]
+  ['post', '/api/save-contact', 'saveContact'],
+  ['post', '/api/join-mailing-list', 'joinMailingList'],
+  ['get', '/api/get-contacts', 'getContacts'],
+  ['get', '/api/get-mailing-list', 'getMailingList']
 ]);
 
 $match = $router->match();

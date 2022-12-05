@@ -6,10 +6,25 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit32336c8d42d1fa1c6def6899296e1855
 {
+    public static $files = array (
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'j' => 
         array (
             'joshtronic\\' => 11,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Component\\Finder\\' => 25,
+        ),
+        'P' => 
+        array (
+            'Psr\\Http\\Message\\' => 17,
+            'PhpZip\\' => 7,
         ),
         'O' => 
         array (
@@ -26,6 +41,22 @@ class ComposerStaticInit32336c8d42d1fa1c6def6899296e1855
         array (
             0 => __DIR__ . '/..' . '/joshtronic/php-loremipsum/src',
         ),
+        'Symfony\\Polyfill\\Php80\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
+        'Symfony\\Component\\Finder\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/finder',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'PhpZip\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nelexa/zip/src',
+        ),
         'Opis\\Database\\' => 
         array (
             0 => __DIR__ . '/..' . '/opis/database/src',
@@ -38,7 +69,12 @@ class ComposerStaticInit32336c8d42d1fa1c6def6899296e1855
 
     public static $classMap = array (
         'AltoRouter' => __DIR__ . '/..' . '/altorouter/altorouter/AltoRouter.php',
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
