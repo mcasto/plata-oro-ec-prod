@@ -1,6 +1,6 @@
 <?php
 
-use Castoware\Config;
+use Castoware\Database;
 use Castoware\Request;
 use Castoware\Util;
 
@@ -10,8 +10,8 @@ ini_set("error_log", __DIR__ . '/error.log');
 
 require_once("vendor/autoload.php");
 $router = new AltoRouter();
-$config = new Config;
-$db = $config->connection ? new \Opis\Database\Database($config->connection) : '';
+$database = new Database;
+$db = $database->db;
 $util = new Util;
 $request = new Request;
 
@@ -35,7 +35,6 @@ if (is_array($match) && is_callable($match['target'])) {
       'db' => $db,
       'request' => $request,
       'util' => $util,
-      'config' => $config
     ]
   );
 } else {

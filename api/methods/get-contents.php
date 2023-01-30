@@ -1,11 +1,9 @@
 <?php
-function getContents($db, $request, $util, $config)
+function getContents($db, $request, $util)
 {
   $path = $request->params->path ?? "/";
-  $page = $db->from('pages')
-    ->where('path')->is($path)
-    ->select()
-    ->first();
+
+  $page = $db->fetch("SELECT * FROM pages WHERE path=?", $path);
 
   $util->success(['page' => $page]);
 }

@@ -1,16 +1,19 @@
 <?php
 
-use Castoware\Config;
-use Opis\Database\Database;
+use Castoware\Database;
 
 require("vendor/autoload.php");
-$config = new Config;
-$db = new Database($config->connection);
+$database = new Database;
+$db = $database->db;
 
-$lip = new joshtronic\LoremIpsum();
+$mailingList = $db->fetchAll("SELECT * FROM mailing_list");
 
-$contents = $lip->paragraphs(6);
+$outputFile = tempnam(sys_get_temp_dir(), 'plata-oro-mailing-list');
 
-$db->update('pages')
-  ->where('id')->is(7)
-  ->set(['contents' => $contents]);
+$fp = fopen($outputFile, 'w');
+foreach ($mailingList as $rec) {
+  fputcsv($fp, (array) $rec);
+}
+fclose($fp);
+
+readfile($outputFile);

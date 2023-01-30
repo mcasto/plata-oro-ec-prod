@@ -4,11 +4,9 @@ use PhpZip\ZipFile;
 
 require_once(dirname(__DIR__) . '/vendor/autoload.php');
 
-function getContacts($db, $request)
+function getContacts($db, $request, $util)
 {
-  $contacts = $db->from('contacts')
-    ->select()
-    ->all();
+  $contacts = $db->fetchAll("SELECT * FROM contacts");
 
   $buildFile = sys_get_temp_dir() . '/plata-oro-ec-contacts-' . date("Y-m-d-H-i-s") . ".zip";
 

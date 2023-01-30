@@ -1,20 +1,11 @@
 <?php
-function saveContact($db, $request)
+
+use Castoware\Sendgrid;
+
+require(dirname(__DIR__) . '/vendor/autoload.php');
+
+function saveContact($db, $request, $util)
 {
-  /*
-    $idFile = __DIR__ . '/id-file.txt';
-    if (!file_exists($idFile)) file_put_contents($idFile, '0');
-    $prevID = trim(file_get_contents(__DIR__ . '/id-file.txt'));
-    $id = $prevID + 1;
-    file_put_contents(__DIR__ . '/id-file.txt', $id);
-    $s = explode(" ", urldecode($request->params->subject));
-    $sid = array_map(function ($word) {
-      return substr($word, 0, 1);
-    }, $s);
-
-    print "POE-" . strtoupper(implode("", $sid)) . "-" . sprintf("%06s", $id);
-*/
-
   $contact = json_decode($request->body, true);
   $sid = array_map(function ($word) {
     return substr($word, 0, 1);
@@ -23,16 +14,21 @@ function saveContact($db, $request)
   $contact['rec_id'] = uniqid();
   $contact['received'] = date("Y-m-d H:i:s");
 
+  $db->query("INSERT INTO contacts", $contact);
 
-  $db->insert($contact)
-    ->into('contacts');
+  $rec = $db->fetch("SELECT * FROM contacts WHERE rec_id=?", $contact['rec_id']);
 
-  $rec = $db->from('contacts')
-    ->where('rec_id')->is($contact['rec_id'])
-    ->select()
-    ->first();
+  $recID = "POE-" . strtoupper(implode("", $sid)) . "-" . sprintf("%06s", $rec->id);
 
-  $db->update('contacts')
-    ->where('id')->is($rec->id)
-    ->set(['rec_id' => "POE-" . strtoupper(implode("", $sid)) . "-" . sprintf("%06s", $rec->id)]);
+  $db->query("UPDATE contacts SET %a WHERE id=?", ['rec_id' => $recID], $rec->id);
+
+  $sendgrid = new Sendgrid();
+
+  // send email
+  $to = 'castoware@gmail.com';
+  $toName = 'Mike Casto';
+  $from = 'plata-oro-ec-contacts@castoware.com';
+  $fromName = 'Website Contact: ' . $recID;
+
+  $sendgrid->sendEmail($db, $rec->email, $rec->name, $to, $toName, $from, $fromName, $rec->subject, $rec->message, $rec->id);
 }

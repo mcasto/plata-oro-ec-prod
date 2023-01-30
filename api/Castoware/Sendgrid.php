@@ -4,12 +4,18 @@
 
 namespace Castoware;
 
+use Exception;
+use Opis\Database\Database;
+
 class Sendgrid
 {
+  private $key, $cipher, $keyFile;
+
   function __construct($key = null)
   {
     $this->key = $key ?? bin2hex(openssl_random_pseudo_bytes(256));
     $this->cipher = "aes-256-gcm";
+    $this->keyFile = __DIR__ . '/sendgrid.key';
   }
 
   function encrypt($plaintext)
@@ -42,16 +48,16 @@ class Sendgrid
     return $this->decrypt(file_get_contents($keyFile));
   }
 
-  function sendEmail($config, $replyTo, $replyToName, $to, $toName, $subject, $body, $contactID)
+  function sendEmail($db, $replyTo, $replyToName, $to, $toName,  $from, $fromName, $subject, $body, $contactID)
   {
     $email = new \SendGrid\Mail\Mail();
-    $email->setFrom('contacts@castoware.com', 'CastoWare Development');
+    $email->setFrom($from, $fromName);
     $email->setReplyTo($replyTo, $replyToName);
     $email->setSubject($subject);
     $email->addTo($to, $toName);
     $email->addContent('text/html', $body);
 
-    $sendgrid = new \SendGrid($this->apiKey($config->keyFile));
+    $sendgrid = new \SendGrid($this->apiKey($this->keyFile));
 
     try {
       $response = $sendgrid->send($email);
@@ -64,15 +70,13 @@ class Sendgrid
 
       $util = new util();
 
-      $config->db->update('contacts')
-        ->where('_id')->is($contactID)
-        ->set(['send_status' => json_encode(['success' => $sendStatus])]);
+      $db->query("UPDATE contacts SET %a WHERE id=?", ['send_status' => json_encode(['success' => $sendStatus])], $contactID);
 
       $util->success($sendStatus);
     } catch (Exception $e) {
-      $config->db->update('contacts')
-        ->where('_id')->is($contactID)
-        ->set(['send_status' => json_encode(['fail' => $e->getMessage()])]);
+      error_log("Sendgrid error: " . $e->getMessage());
+
+      $db->query("UPDATE contacts SET %a WHERE id=?", ['send_status' => json_encode(['fail' => $e->getMessage()])], $contactID);
 
       $util->fail($e->getMessage());
     }

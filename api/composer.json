@@ -1,9 +1,10 @@
 {
   "require": {
     "altorouter/altorouter": "^2.0",
-    "opis/database": "^4.2",
     "joshtronic/php-loremipsum": "^2.1",
-    "nelexa/zip": "^4.0"
+    "nelexa/zip": "^4.0",
+    "sendgrid/sendgrid": "^8.0",
+    "dibi/dibi": "^4.2"
   },
   "autoload": {
     "psr-4": {

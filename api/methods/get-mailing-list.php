@@ -1,15 +1,13 @@
 <?php
-function getMailingList($db, $request)
+function getMailingList($db, $request, $util)
 {
-  $mailingList = $db->from('mailing_list')
-    ->select()
-    ->fetchAssoc()
-    ->all();
+  $mailingList = $db->fetchAll("SELECT * FROM mailing_list");
 
   $outputFile = tempnam(sys_get_temp_dir(), 'plata-oro-mailing-list');
+
   $fp = fopen($outputFile, 'w');
   foreach ($mailingList as $rec) {
-    fputcsv($fp, $rec);
+    fputcsv($fp, (array) $rec);
   }
   fclose($fp);
 
