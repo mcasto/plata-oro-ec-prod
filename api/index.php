@@ -22,7 +22,8 @@ $router->addRoutes([
   ['post', '/api/save-contact', 'saveContact'],
   ['post', '/api/join-mailing-list', 'joinMailingList'],
   ['get', '/api/get-contacts', 'getContacts'],
-  ['get', '/api/get-mailing-list', 'getMailingList']
+  ['get', '/api/get-mailing-list', 'getMailingList'],
+  ['post', '/api/verify-admin', 'verifyAdmin']
 ]);
 
 $match = $router->match();
