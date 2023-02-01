@@ -25,10 +25,21 @@ function saveContact($db, $request, $util)
   $sendgrid = new Sendgrid();
 
   // send email
-  $to = 'castoware@gmail.com';
-  $toName = 'Mike Casto';
-  $from = 'plata-oro-ec-contacts@castoware.com';
-  $fromName = 'Website Contact: ' . $recID;
 
-  $sendgrid->sendEmail($db, $rec->email, $rec->name, $to, $toName, $from, $fromName, $rec->subject, $rec->message, $rec->id);
+  // $to = "castoware@gmail.com";
+  // $toName = 'My Testing';
+
+  $toList = [
+    ['name' => '', 'email' => 'contact@plataoroec.com'],
+    ['name' => '', 'email' => 'shopcuenca@gmail.com']
+  ];
+
+  foreach ($toList as $toItem) {
+    $to = $toItem['email'];
+    $toName = $toItem['name'];
+    $from = 'plata-oro-ec-contacts@castoware.com';
+    $fromName = 'Website Contact: ' . $recID;
+
+    $sendgrid->sendEmail($db, $rec->email, $rec->name, $to, $toName, $from, $fromName, $rec->subject, $rec->message, $rec->id);
+  }
 }
